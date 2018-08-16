@@ -11,12 +11,16 @@ export default function(state = initialState, action) {
         ...state
       };
     case ADD_ITEM:
+    let {[state.items.length - 1] : item} = state.items;
+    const index= (item==undefined?0:item.id)
+
+    console.log(index);
       return {
         ...state,
         items: [
           ...state.items,
           {
-            id: state.items.length++,
+            id: index+1,
             name: action.payload
           }
         ]

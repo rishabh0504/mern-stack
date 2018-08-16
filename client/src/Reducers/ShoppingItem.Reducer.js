@@ -1,7 +1,8 @@
-import { FETCH_ITEMS, ADD_ITEM, DELETE_ITEM,UPDATE_ITEM } from "../Actions/ActionTypes";
+import { FETCH_ITEMS, ADD_ITEM, DELETE_ITEM,UPDATE_ITEM,ITEMS_LOADING } from "../Actions/ActionTypes";
 
 const initialState = {
-  items: []
+  items: [],
+  loading:false
 };
 
 export default function(state = initialState, action) {
@@ -38,6 +39,12 @@ export default function(state = initialState, action) {
          });
       return {
         ...state
+      };
+
+      case ITEMS_LOADING:
+      return {
+        ...state,
+       loading:true
       };
   }
   return state;

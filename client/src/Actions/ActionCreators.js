@@ -1,4 +1,4 @@
-import {FETCH_ITEMS,ADD_ITEM,DELETE_ITEM,UPDATE_ITEM}  from './ActionTypes'
+import {FETCH_ITEMS,ADD_ITEM,DELETE_ITEM,UPDATE_ITEM,ITEMS_LOADING}  from './ActionTypes'
 
 
 
@@ -27,5 +27,10 @@ export const updateItem = item => {
 	}
 }
 
+export const setItemsLoading = () => {
+	return {
+		type:ITEMS_LOADING,
+	}
+}
 
 

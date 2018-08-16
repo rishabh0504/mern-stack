@@ -1,49 +1,47 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addItem,fetchItems,deleteItem,updateItem } from "../Actions/ActionCreators";
+import {
+  addItem,
+  fetchItems,
+  deleteItem,
+  updateItem
+} from "../Actions/ActionCreators";
 import { bindActionCreators } from "redux";
-
+import Item from "./Item";
 class ShoppingList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      item: ""
+      item: "",
+      id: ""
     };
   }
 
   inputHandler = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
-  componentDidMount(){
+  componentDidMount() {
     this.props.fetchItems();
   }
-  addItemAction = ()=>{
+  addItemAction = () => {
     this.props.addItem(this.state.item);
-    this.setState({item:''});
-  }
-  deleteProduct = (id) =>{
-   this.props.deleteItem(id);
-  }
+    this.setState({ item: "" });
+  };
+  deleteProduct = id => {
+    this.props.deleteItem(id);
+  };
+
+  updateProduct = id => {
+    const selectedItem = this.props.items.items.find(item => item._id === id);
+    console.log(selectedItem);
+    this.setState({ id: selectedItem._id, item: selectedItem.name });
+    this.setState({ style: { display: "none" } });
+  };
+
   render() {
-    
-    const items = this.props.items.items.map(item => {
-      return (
-        <div className="row" key={item.id}>
-          <div className="col-sm-8">
-            <p className="text-center">
-              <strong>
-                {item.id}.{item.name}
-              </strong>
-            </p>
-          </div>
-          <div className="col-sm-4">
-            <button type="button" className="btn btn-danger btn-sm" onClick={()=>this.deleteProduct(item.id)}>
-              Delete
-            </button>
-          </div>
-        </div>
-      );
+    let items = this.props.items.items.map(item => {
+      return <Item item={item} key={item._id} />;
     });
 
     return (
@@ -68,7 +66,7 @@ class ShoppingList extends Component {
               Add Item
             </button>
           </div>
-          <div className="col-sm-2"/>
+          <div className="col-sm-2" />
         </div>
         <div className="jumbotron">{items}</div>
       </div>
@@ -78,9 +76,9 @@ class ShoppingList extends Component {
 
 ShoppingList.propTypes = {
   items: PropTypes.object.isRequired,
-  addItem : PropTypes.func.isRequired,
-  fetchItems : PropTypes.func.isRequired,
-  deleteItem : PropTypes.func.isRequired,
+  addItem: PropTypes.func.isRequired,
+  fetchItems: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -90,7 +88,10 @@ const mapStateToProps = state => {
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ addItem, fetchItems ,deleteItem,updateItem}, dispatch);
+  return bindActionCreators(
+    { addItem, fetchItems, deleteItem, updateItem },
+    dispatch
+  );
 }
 
 export default connect(

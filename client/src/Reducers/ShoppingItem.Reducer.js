@@ -9,21 +9,16 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case FETCH_ITEMS:
       return {
-        ...state
+        ...state,
+        items:   action.payload
       };
     case ADD_ITEM:
-    let {[state.items.length - 1] : item} = state.items;
-    const index= (item==undefined?0:item.id)
 
-    console.log(index);
       return {
         ...state,
         items: [
           ...state.items,
-          {
-            id: index+1,
-            name: action.payload
-          }
+          action.payload
         ]
       };
     case DELETE_ITEM:
@@ -44,7 +39,7 @@ export default function(state = initialState, action) {
       case ITEMS_LOADING:
       return {
         ...state,
-       loading:true
+       loading:! state.loading
       };
   }
   return state;

@@ -1,24 +1,36 @@
 import {FETCH_ITEMS,ADD_ITEM,DELETE_ITEM,UPDATE_ITEM,ITEMS_LOADING}  from './ActionTypes'
 
+import axios from 'axios';
 
-
-export const fetchItems = () =>{
-	return {
-		type:FETCH_ITEMS
-	}
+export const fetchItems = () => dispatch =>{
+	dispatch(setItemsLoading());
+	axios.get('/api/items')
+	.then(res=>{
+		dispatch({
+			type:FETCH_ITEMS,
+			payload : res.data
+		});
+	})
 }
 
-export const addItem = name => {
-	return {
-		type:ADD_ITEM,
-		payload : name
-	}
+export const addItem = name => dispatch => {
+	dispatch(setItemsLoading());
+	axios.post('/api/items',{name})
+	.then(res=>{
+		dispatch({
+			type:FETCH_ITEMS,
+			payload : res.data
+		});
+	})
 }
-export const deleteItem = id => {
-	return {
-		type:DELETE_ITEM,
-		payload : id
-	}
+export const deleteItem = id =>dispatch => {
+	axios.delete(`/api/items/${id}`)
+	.then(res =>{
+		dispatch({
+			type:FETCH_ITEMS,
+			payload : res.data
+		})
+	})
 }
 export const updateItem = item => {
 	return {
